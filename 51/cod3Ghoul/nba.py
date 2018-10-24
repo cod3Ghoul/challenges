@@ -61,7 +61,14 @@ def import_to_db(players=None):
     if players is None:
         players = list(load_data())
 
-    # you code ...
+    cur.execute('''CREATE TABLE players 
+                   (name, year, first_year, team, college, active, games,
+                    avg_min, avg_points)''')
+
+    for player in players:
+        cur.execute(f"INSERT INTO players VALUES ({player[0]},year,first_year,team,college,active,games,avg_min,avg_points)")
+
+    conn.commit()
 
 
 def player_with_max_points_per_game():
@@ -107,6 +114,8 @@ if __name__ == '__main__':
         cur.execute(sql)
         ret = cur.fetchall()
         return ret[0][0]
+
+    print(f'{_verify_total_row_count_after_import()}')
 
     assert _verify_total_row_count_after_import() == 3961
 
